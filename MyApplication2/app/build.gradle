@@ -44,6 +44,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     compile 'org.jsoup:jsoup:1.10.3'
-    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
 }

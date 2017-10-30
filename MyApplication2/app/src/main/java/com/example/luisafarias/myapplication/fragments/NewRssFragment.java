@@ -81,7 +81,7 @@ public class NewRssFragment extends Fragment {
 						if (android.webkit.URLUtil.isValidUrl(url)){
 							saveNewFeed(rss);
 						}else {
-							Snackbar.make(getView(),"Url invalida", Snackbar.LENGTH_LONG).show();
+							Snackbar.make(v.getRootView().findViewById(R.id.coordinator),"Url invalida", Snackbar.LENGTH_LONG).show();
 						}
 					} catch (JSONException e) {
 						Log.e(NewRssFragment.class.getName(), e.getMessage());
