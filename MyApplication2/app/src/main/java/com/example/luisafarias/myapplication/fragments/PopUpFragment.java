@@ -30,8 +30,8 @@ public class PopUpFragment extends DialogFragment {
 		String token = getArguments().getString(Constants.TOKEN);
 		_authorization = new TokenAuthorization(token);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage("O que deseja fazer com" + nome)
-			.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+		builder.setMessage("Deseja excluir " + nome)
+			.setPositiveButton("Cancelar", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					if (_rss != null && _authorization != null) {

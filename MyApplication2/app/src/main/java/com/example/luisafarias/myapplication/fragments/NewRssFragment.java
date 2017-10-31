@@ -39,7 +39,7 @@ public class NewRssFragment extends Fragment {
 			_userId = getArguments().getString(Constants.USER_ID);
 			_token = getArguments().getString(Constants.TOKEN);
 			_rss = getArguments().getParcelable(Constants.RSS);
-			_newOrEdit = getArguments().getBoolean(Constants.NEW_OR_EDIT);
+			//_newOrEdit = getArguments().getBoolean(Constants.NEW_OR_EDIT);
 			_authorization = new TokenAuthorization(_token);
 			//Log.d("NewRssFragment", "testando");
 		}
@@ -61,23 +61,23 @@ public class NewRssFragment extends Fragment {
 		}
 
 		Button save = _view.findViewById(R.id.save);
-		if (_newOrEdit) { /**updateFeed**/
-			_urlEditText.setText(_rss.getUrl());
-
-			save.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					try {
-						updateFeed(_rss);
-
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-		} else {
+//		if (_newOrEdit) { /**updateFeed**/
+//			_urlEditText.setText(_rss.getUrl());
+//
+//			save.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					try {
+//						updateFeed(_rss);
+//
+//					} catch (JSONException e) {
+//						e.printStackTrace();
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
+//		} else {
 			/**NewFeed**/
 			save.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -100,7 +100,7 @@ public class NewRssFragment extends Fragment {
 
 				}
 			});
-		}
+
 		return _view;
 	}
 
