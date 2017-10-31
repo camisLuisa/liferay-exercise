@@ -1,6 +1,9 @@
 package com.example.luisafarias.myapplication.fragments;
 
 import android.app.Fragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -18,7 +21,6 @@ import com.example.luisafarias.myapplication.model.RetrofitClient;
 import com.example.luisafarias.myapplication.util.Constants;
 import com.wedeploy.android.auth.Authorization;
 import com.wedeploy.android.auth.TokenAuthorization;
-import com.wedeploy.android.util.URLUtil;
 
 import org.json.JSONException;
 
@@ -39,7 +41,7 @@ public class NewRssFragment extends Fragment {
 			_rss = getArguments().getParcelable(Constants.RSS);
 			_newOrEdit = getArguments().getBoolean(Constants.NEW_OR_EDIT);
 			_authorization = new TokenAuthorization(_token);
-			Log.d("NewRssFragment", "testando");
+			//Log.d("NewRssFragment", "testando");
 		}
 	}
 
@@ -48,10 +50,19 @@ public class NewRssFragment extends Fragment {
 
 		// Inflate the layout for this fragment
 		_view = inflater.inflate(R.layout.fragment_new_rss, container, false);
-		_url = _view.findViewById(R.id.newUrlFeed);
+		ClipboardManager cbm = (ClipboardManager) _view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipData cd = cbm.getPrimaryClip();
+		ClipData.Item item = cd.getItemAt(0);
+		final String copied = item.getText().toString();
+
+		_urlEditText = _view.findViewById(R.id.newUrlFeed);
+		if (android.webkit.URLUtil.isValidUrl(copied)){
+			_urlEditText.setText(copied);
+		}
+
 		Button save = _view.findViewById(R.id.save);
 		if (_newOrEdit) { /**updateFeed**/
-			_url.setText(_rss.getUrl());
+			_urlEditText.setText(_rss.getUrl());
 
 			save.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -71,20 +82,22 @@ public class NewRssFragment extends Fragment {
 			save.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					String url = _url.getText().toString();
-					Rss rss = new Rss(url, _userId, null);
-					Log.d("teste", url);
-					try {
-						if (android.webkit.URLUtil.isValidUrl(url)){
-							saveNewFeed(rss);
-						}else {
-							Snackbar.make(v.getRootView().findViewById(R.id.coordinator),"Url invalida", Snackbar.LENGTH_LONG).show();
+
+						String url = _urlEditText.getText().toString();
+						Rss rss = new Rss(url, _userId, null);
+						Log.d("teste", url);
+						try {
+							if (android.webkit.URLUtil.isValidUrl(url)){
+								saveNewFeed(rss);
+							}else {
+								Snackbar.make(v.getRootView().findViewById(R.id.coordinator),"Url invalida", Snackbar.LENGTH_LONG).show();
+							}
+						} catch (JSONException e) {
+							Log.e(NewRssFragment.class.getName(), e.getMessage());
+						} catch (IOException e) {
+							e.printStackTrace();
 						}
-					} catch (JSONException e) {
-						Log.e(NewRssFragment.class.getName(), e.getMessage());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+
 				}
 			});
 		}
@@ -98,7 +111,7 @@ public class NewRssFragment extends Fragment {
 			@Override
 			public void onSuccess(Channel channel) throws JSONException {
 
-				rss.setUrl(_url.getText().toString());
+				rss.setUrl(_urlEditText.getText().toString());
 				Repositorio.getInstance()
 						.updateFeed(rss, _authorization, new Repositorio.CallbackFeed() {
 							@Override
@@ -187,9 +200,8 @@ public class NewRssFragment extends Fragment {
 	private Channel _channel;
 	private Rss _rss;
 	private boolean _newOrEdit = false;
-	//private EditText _nome;
 	private String _token;
 	private String _userId;
 	private View _view;
-	private EditText _url;
+	private EditText _urlEditText;
 }
