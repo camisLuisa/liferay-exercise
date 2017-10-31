@@ -48,11 +48,9 @@ public class NewRssFragment extends Fragment {
 
 		// Inflate the layout for this fragment
 		_view = inflater.inflate(R.layout.fragment_new_rss, container, false);
-		//_nome = _view.findViewById(R.id.newNameFeed);
 		_url = _view.findViewById(R.id.newUrlFeed);
 		Button save = _view.findViewById(R.id.save);
 		if (_newOrEdit) { /**updateFeed**/
-			//_nome.setText(_feed.getTitle());
 			_url.setText(_rss.getUrl());
 
 			save.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +71,6 @@ public class NewRssFragment extends Fragment {
 			save.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//String name = _nome.getText().toString();
 					String url = _url.getText().toString();
 					Rss rss = new Rss(url, _userId, null);
 					Log.d("teste", url);
